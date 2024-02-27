@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/nav-bar.dart';
+import 'package:upch_events_app/components/nav_bar.dart';
 import 'package:upch_events_app/components/top_bar.dart';
 
 class Home extends StatefulWidget {
