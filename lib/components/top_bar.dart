@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final Color backgroundColor;
 
-  const TopBar({super.key, required this.title, required this.backgroundColor});
+  const TopBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
         alignment: Alignment.center,
-        color: backgroundColor,
+        color: const Color(0xff8b00be),
         height: 80,
         child: Container(
             margin: const EdgeInsets.only(bottom: 10),
