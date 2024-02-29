@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:upch_events_app/components/nav_bar.dart';
 import 'package:upch_events_app/components/top_bar.dart';
 
-class Calendar extends StatefulWidget {
-  const Calendar({super.key, required this.title});
+class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<Calendar> createState() => _CalendarState();
+  State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +75,6 @@ class _CalendarState extends State<Calendar> {
           ],
         ),
       ),
-      bottomNavigationBar: const NavBar(),
     );
   }
 }
