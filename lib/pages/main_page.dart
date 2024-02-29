@@ -5,6 +5,7 @@ import 'package:upch_events_app/pages/home_page.dart';
 import 'package:upch_events_app/pages/calendar_page.dart';
 import 'package:upch_events_app/pages/events_page.dart';
 import 'package:upch_events_app/pages/map_page.dart';
+import 'package:upch_events_app/pages/schedule_form_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -18,7 +19,7 @@ class _MainPageState extends State<MainPage> {
   final mapNavKey = GlobalKey<NavigatorState>();
   final homeNavKey = GlobalKey<NavigatorState>();
   final eventsNavKey = GlobalKey<NavigatorState>();
-  final eventDetailsNavKey = GlobalKey<NavigatorState>();
+  final scheduleNavKey = GlobalKey<NavigatorState>();
   int selectedTab = 2;
   List<NavModel> items = [];
 
@@ -34,6 +35,8 @@ class _MainPageState extends State<MainPage> {
           page: const HomePage(title: 'Principal'), navigatorKey: homeNavKey),
       NavModel(
           page: const EventsPage(title: "Eventos"), navigatorKey: eventsNavKey),
+      NavModel(
+          page: const ScheduleFormPage(), navigatorKey: scheduleNavKey),
     ];
   }
 
