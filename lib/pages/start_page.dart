@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:upch_events_app/pages/login_page.dart';
 
-import 'main_page.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -18,13 +18,16 @@ class StartPage extends StatelessWidget {
             children: [
               Image.asset('assets/images/logoup.png', width: 200),
               IconButton(
-                icon: const Icon(Icons.arrow_circle_right_outlined,
-                    size: 60, color: Colors.white,),
+                icon: const Icon(
+                  Icons.arrow_circle_right_outlined,
+                  size: 60,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MainPage()));
+                          builder: (context) => const LoginPage()));
                 },
               ),
             ],
