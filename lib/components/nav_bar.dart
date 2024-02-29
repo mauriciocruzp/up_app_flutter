@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
+  final int pageIndex;
+  final Function(int) onTap;
+
   const NavBar({
     super.key,
+    required this.pageIndex,
+    required this.onTap,
   });
 
   @override
@@ -14,11 +19,31 @@ class NavBar extends StatelessWidget {
           height: 60,
           child: Row(
             children: [
-              navItem(Icons.calendar_today_sharp, false),
-              navItem(Icons.map_outlined, false),
-              navItem(Icons.home_outlined, true),
-              navItem(Icons.calendar_month_outlined, false),
-              navItem(Icons.access_time_sharp , false),
+              navItem(
+                  Icons.calendar_today_sharp,
+                  pageIndex == 0,
+                  onTap: () => onTap(0),
+              ),
+              navItem(
+                  Icons.map_outlined,
+                  pageIndex == 1,
+                  onTap: () => onTap(1),
+              ),
+              navItem(
+                  Icons.home_outlined,
+                  pageIndex == 2,
+                  onTap: () => onTap(2),
+              ),
+              navItem(
+                  Icons.calendar_month_outlined,
+                  pageIndex == 3,
+                  onTap: () => onTap(3),
+              ),
+              navItem(
+                  Icons.access_time_sharp,
+                  pageIndex == 4,
+                  onTap: () => onTap(4),
+              ),
             ],
           ),
         ),
@@ -26,9 +51,10 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  Widget navItem(IconData icon, bool selected) {
+  Widget navItem(IconData icon, bool selected, {Function()? onTap}) {
     return Expanded(
       child: InkWell(
+        onTap: onTap,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(50),
           child: Container(
