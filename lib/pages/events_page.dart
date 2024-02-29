@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/nav_bar.dart';
 import 'package:upch_events_app/components/top_bar.dart';
+import 'package:upch_events_app/pages/event_details_page.dart';
 
-class Events extends StatefulWidget {
-  const Events({super.key, required this.title});
+class EventsPage extends StatefulWidget {
+  const EventsPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<Events> createState() => _EventsState();
+  State<EventsPage> createState() => _EventsPageState();
 }
 
-class _EventsState extends State<Events> {
+class _EventsPageState extends State<EventsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,15 +22,14 @@ class _EventsState extends State<Events> {
         childAspectRatio: 0.95,
         crossAxisCount: 2,
         children: List.generate(20, (index) {
-          return eventCard();
+          return eventCard(context);
         }),
       ),
-      bottomNavigationBar: const NavBar(),
     );
   }
 }
 
-Widget eventCard() {
+Widget eventCard(BuildContext context) {
   return Container(
     alignment: Alignment.center,
     margin: const EdgeInsets.all(10),
@@ -43,7 +42,10 @@ Widget eventCard() {
       children: [
         Image.asset('assets/images/evento1.jpg', width: 120),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const EventDetailsPage()));
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xff5A3966),
             shape: RoundedRectangleBorder(
