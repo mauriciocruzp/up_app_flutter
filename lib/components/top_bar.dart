@@ -1,28 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upch_events_app/main.dart';
+import 'package:upch_events_app/pages/start_page.dart';
+import 'package:upch_events_app/pages/update_user_page.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const TopBar({super.key, required this.title});
+  const TopBar({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Container(
-        alignment: Alignment.center,
-        color: const Color(0xff8b00be),
-        height: 80,
-        child: Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            alignment: Alignment.bottomCenter,
-            child: Text(title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                ))),
-      )
-    ]);
+    return Column(
+      children: [
+        Container(
+          color: const Color(0xff8b00be),
+          height: 80,
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.person, color: Colors.white),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateUserPage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: IconButton(
+                  icon: const Icon(Icons.logout, color: Colors.white),
+                  onPressed: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setString('token', '');
+                  },
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   @override

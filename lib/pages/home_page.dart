@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const EventDetailsPage()));
+                                          const EventDetailsPage(id: '1')));
                             },
                             child: const Text('Ver más'),
                           ),
@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const EventDetailsPage()));
+                                          const EventDetailsPage(id: '2')));
                             },
                             child: const Text('Ver más'),
                           ),

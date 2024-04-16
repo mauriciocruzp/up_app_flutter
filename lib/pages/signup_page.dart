@@ -1,53 +1,35 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:upch_events_app/components/top_bar.dart';
+import 'package:upch_events_app/pages/login_page.dart';
 import 'package:upch_events_app/pages/main_page.dart';
-import 'package:upch_events_app/pages/signup_page.dart';
 import 'package:upch_events_app/services/auth_user_service.dart';
+import 'package:upch_events_app/services/register_user_service.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class SignUpPage extends StatelessWidget {
+  SignUpPage({super.key});
 
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: AuthUserService().isLogged(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox(
-            width: 50,
-            child:
-              CircularProgressIndicator(backgroundColor: Colors.white),
-          );
-        } else {
-          if (snapshot.data == true) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const MainPage()),
-              );
-            });
-          }
-          return Scaffold(
-            appBar: const TopBar(title: 'Inicio de sesión'),
-            body: Container(
-              margin: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _header(context),
-                  _inputField(context),
-                  // _forgotPassword(context),
-                  // _signup(context),
-                ],
-              ),
-            ),
-          );
-        }
-      },
+    return Scaffold(
+      appBar: const TopBar(title: 'Registro'),
+      body: Container(
+        margin: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _header(context),
+            _inputField(context),
+            // _forgotPassword(context),
+            // _signup(context),
+          ],
+        ),
+      ),
     );
   }
 
@@ -68,6 +50,30 @@ class LoginPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        TextField(
+          controller: firstNameController,
+          decoration: InputDecoration(
+              hintText: "Nombre",
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide.none),
+              fillColor: Colors.purple.withOpacity(0.1),
+              filled: true,
+              prefixIcon: const Icon(Icons.person)),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: lastNameController,
+          decoration: InputDecoration(
+              hintText: "Apellido",
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide.none),
+              fillColor: Colors.purple.withOpacity(0.1),
+              filled: true,
+              prefixIcon: const Icon(Icons.person)),
+        ),
+        const SizedBox(height: 10),
         TextField(
           controller: emailController,
           decoration: InputDecoration(
@@ -96,20 +102,22 @@ class LoginPage extends StatelessWidget {
         const SizedBox(height: 10),
         ElevatedButton(
           onPressed: () {
+            String firstName = firstNameController.text;
+            String lastName = lastNameController.text;
             String email = emailController.text;
             String password = passwordController.text;
 
-            AuthUserService authUserService = AuthUserService();
-            authUserService.login(email, password).then((token) {
+            RegisterUserService registerUserService = RegisterUserService();
+            registerUserService.register(firstName, lastName, email, password).then((token) {
               if (token != null) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MainPage()),
+                  MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text("Correo o contraseña incorrectos"),
+                    content: Text("Usuario ya existente"),
                   ),
                 );
               }
@@ -121,7 +129,7 @@ class LoginPage extends StatelessWidget {
             backgroundColor: const Color(0xff8b00be),
           ),
           child: const Text(
-            "Iniciar sesión",
+            "Registrarse",
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         ),
@@ -129,16 +137,16 @@ class LoginPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("¿No tienes una cuenta? "),
+            const Text("¿Ya tienes una cuenta? "),
             TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                  MaterialPageRoute(builder: (context) => LoginPage()),
                 );
               },
               child: const Text(
-                "Regístrate",
+                "Inicia sesión",
                 style: TextStyle(color: Colors.purple),
               ),
             ),
@@ -147,4 +155,27 @@ class LoginPage extends StatelessWidget {
       ],
     );
   }
+
+// _forgotPassword(context) {
+//   return TextButton(
+//     onPressed: () {},
+//     child: const Text("Forgot password?",
+//       style: TextStyle(color: Colors.purple),
+//     ),
+//   );
+// }
+//
+// _signup(context) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       const Text("Dont have an account? "),
+//       TextButton(
+//           onPressed: () {},
+//           child: const Text(
+//             "Sign Up", style: TextStyle(color: Colors.purple),)
+//       )
+//     ],
+//   );
+// }
 }

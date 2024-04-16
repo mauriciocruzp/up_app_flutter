@@ -1,43 +1,156 @@
 import 'package:flutter/material.dart';
 import 'package:upch_events_app/components/top_bar.dart';
+import 'package:upch_events_app/pages/events_page.dart';
 
-class EventDetailsPage extends StatelessWidget {
+import '../models/comment_model.dart';
+import '../models/event_model.dart';
+import '../services/auth_user_service.dart';
+import '../services/event_service.dart';
+
+class EventDetailsPage extends StatefulWidget {
+  final String id;
+
   const EventDetailsPage({
+    required this.id,
     super.key,
   });
 
   @override
+  _EventDetailsPageState createState() => _EventDetailsPageState();
+}
+
+class _EventDetailsPageState extends State<EventDetailsPage> {
+  late Future<EventModel> futureEvent;
+  late Future<List<CommentModel>> futureComments;
+  late Future<List<String?>> futureUser;
+
+  @override
+  void initState() {
+    super.initState();
+    futureEvent = EventService().fetchEvent(widget.id);
+    futureComments = EventService().fetchComments(widget.id);
+    futureUser = AuthUserService().getUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TopBar(title: "Evento"),
+      appBar: const TopBar(title: "Evento"),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: Image.asset('assets/images/evento1.jpg',
-                  width: 280, height: 300),
-            ),
-            const Text(
-              textAlign: TextAlign.center,
-              "Encuentro anual ANUIES-TIC AUNL |2024",
-              style: TextStyle(
-                  color: Color(0xff0D0C0C),
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Inter"),
-            ),
-            const Text(
-              textAlign: TextAlign.center,
-              "Requisitos: ser estudiante o tesista\nLugar: Universidad Politecnica de Chiapas\nFecha: 30 de Marzo de 2024\nHora: 10:00 am-12:00 pm\nCosto: 800\nModalidad: Presencial\nRegistro: 964 002 58 95\nMas información: https://eventoUANL.com",
-              style: TextStyle(
-                  height: 2.5,
-                  color: Color(0xff0D0C0C),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: "Inter"),
-            ),
-          ],
+        child: FutureBuilder<EventModel>(
+          future: futureEvent,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var comment = snapshot.hasData;
+              return Column(
+                children: [
+                  EventCard(context: context, event: snapshot.data!),
+                  Container(
+                    width: double.infinity,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                    child: Column(
+                      children: [
+                        Text(
+                          snapshot.data!.description,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Lugar: ${snapshot.data!.location}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          'Fecha: ${snapshot.data!.date.toUtc()}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                                  FutureBuilder<List<String?>>(
+                                    future: futureUser,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        if (snapshot.data![1] == 'true') {
+                                          return ElevatedButton(
+                                            onPressed: () {
+                                              EventService()
+                                                  .deleteEvent(widget.id);
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const EventsPage(title: 'Eventos',),
+                                                ),
+                                              );
+                                            },
+                                            child:
+                                                const Text('Eliminar evento'),
+                                          );
+                                        } else {
+                                          return const SizedBox
+                                              .shrink(); // No muestra nada si el usuario no es administrador
+                                        }
+                                      } else if (snapshot.hasError) {
+                                        return Text('${snapshot.error}');
+                                      }
+                                      return CircularProgressIndicator();
+                                    },
+                                  ),
+                      ],
+                    ),
+                  ),
+                  FutureBuilder<List<CommentModel>>(
+                    future: futureComments,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final comment = snapshot.data![index];
+                            return Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xffeeeeee),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    comment.text,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const CircularProgressIndicator();
+                    },
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+
+            return const CircularProgressIndicator();
+          },
         ),
       ),
     );

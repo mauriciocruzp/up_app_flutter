@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:upch_events_app/components/top_bar.dart';
+import 'package:upch_events_app/models/comment_model.dart';
+import 'package:upch_events_app/pages/create_event_page.dart';
 import 'package:upch_events_app/pages/event_details_page.dart';
+import 'package:upch_events_app/services/event_service.dart';
+import 'package:upch_events_app/models/event_model.dart';
+
+import '../models/user_model.dart';
+import '../services/auth_user_service.dart';
 
 class EventsPage extends StatefulWidget {
   const EventsPage({super.key, required this.title});
@@ -12,56 +19,169 @@ class EventsPage extends StatefulWidget {
 }
 
 class _EventsPageState extends State<EventsPage> {
+  late Future<List<EventModel>> futureEvents;
+  late Future<List<String?>> futureUser;
+
+  @override
+  void initState() {
+    super.initState();
+
+    EventService es = EventService();
+    futureEvents = es.fetchEvents();
+
+    AuthUserService aus = AuthUserService();
+    futureUser = aus.getUserData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fetchEventsFromApi();
+  }
+
+  void fetchEventsFromApi() {
+    EventService es = EventService();
+    futureEvents = es.fetchEvents();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
         title: widget.title,
       ),
-      body: GridView.count(
-        childAspectRatio: 0.95,
-        crossAxisCount: 2,
-        children: List.generate(20, (index) {
-          return eventCard(context);
-        }),
+      body: Center(
+        child: FutureBuilder<List<EventModel>>(
+          future: futureEvents,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return buildEvents(snapshot.data!);
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+
+            return const CircularProgressIndicator();
+          },
+        ),
       ),
+      backgroundColor: const Color(0xffE9E9E9),
+    );
+  }
+
+  Widget buildEvents(List<EventModel> events) {
+    return ListView.builder(
+      itemCount: events.length + 1, // Agrega un espacio para el botón
+      itemBuilder: (context, index) {
+        if (index < events.length) {
+          final event = events[index];
+          return EventCard(context: context, event: event);
+        } else {
+          return FutureBuilder<List<String?>>(
+            future: futureUser,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                print(snapshot.data!);
+                if (snapshot.data![1] == 'true') {
+                  return ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CreateEventPage()),
+                      );
+                    },
+                    child: const Text('Agregar evento'),
+                  );
+                } else {
+                  return SizedBox.shrink(); // No muestra nada si el usuario no es administrador
+                }
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return CircularProgressIndicator();
+            },
+          );
+        }
+      },
     );
   }
 }
 
-Widget eventCard(BuildContext context) {
-  return Container(
-    alignment: Alignment.center,
-    margin: const EdgeInsets.all(10),
-    padding: const EdgeInsets.all(10),
-    decoration: BoxDecoration(
-      color: const Color(0xffd9d9d9),
-      borderRadius: BorderRadius.circular(15.0),
-    ),
-    child: Column(
-      children: [
-        Image.asset('assets/images/evento1.jpg', width: 120),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const EventDetailsPage()));
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xff5A3966),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+class EventCard extends StatefulWidget {
+  final EventModel event;
+  final BuildContext context;
+
+  const EventCard({super.key, required this.context, required this.event});
+
+  @override
+  _EventCardState createState() => _EventCardState();
+}
+
+class _EventCardState extends State<EventCard> {
+  late Future<List<CommentModel>> futureComments;
+
+  @override
+  void initState() {
+    super.initState();
+    EventService es = EventService();
+    futureComments = es.fetchComments(widget.event.id);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EventDetailsPage(
+              id: widget.event.id,
             ),
           ),
-          child: const Text(
-            "Ver",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
         ),
-      ],
-    ),
-  );
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+              child: Text(
+                widget.event.title,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            Image.network(widget.event.image),
+            FutureBuilder<List<CommentModel>>(
+              future: futureComments,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    width: double.infinity,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                          '${snapshot.data!.length.toString()} comentarios', style: const TextStyle(color: Colors.black38),),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
