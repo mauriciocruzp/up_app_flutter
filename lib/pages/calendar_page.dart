@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:upch_events_app/components/top_bar.dart';
+import 'package:upch_events_app/services/documents_service.dart'; // Importa el servicio de documentos
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key, required this.title});
@@ -11,6 +12,22 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  String documentUrl = ""; // Variable para almacenar la URL del documento
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDocumentUrl(); // Obtiene la URL del documento al inicializar el estado
+  }
+
+  fetchDocumentUrl() async {
+    DocumentsService documentsService = DocumentsService();
+    var document = await documentsService.fetchDocument('fe78ff6e-0a2d-4828-a833-640a0c5cfc07');
+    setState(() {
+      documentUrl = document.url; // Actualiza la URL del documento
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +64,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset('assets/images/Calendario.jpg', width: 280),
+                        Image.network(documentUrl, width: 280),
                         ElevatedButton(
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
