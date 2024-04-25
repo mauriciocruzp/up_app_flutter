@@ -1,16 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upch_events_app/components/top_bar.dart';
-import 'package:upch_events_app/pages/login_page.dart';
-import 'package:upch_events_app/pages/main_page.dart';
 import 'package:upch_events_app/services/auth_user_service.dart';
-import 'package:upch_events_app/services/register_user_service.dart';
 
 import 'home_page.dart';
 
 class UpdateUserPage extends StatefulWidget {
-  UpdateUserPage({super.key});
+  const UpdateUserPage({super.key});
 
   @override
   _UpdateUserPageState createState() => _UpdateUserPageState();
