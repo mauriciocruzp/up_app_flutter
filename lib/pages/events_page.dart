@@ -6,7 +6,6 @@ import 'package:upch_events_app/pages/event_details_page.dart';
 import 'package:upch_events_app/services/event_service.dart';
 import 'package:upch_events_app/models/event_model.dart';
 
-import '../models/user_model.dart';
 import '../services/auth_user_service.dart';
 
 class EventsPage extends StatefulWidget {
@@ -93,12 +92,12 @@ class _EventsPageState extends State<EventsPage> {
                     child: const Text('Agregar evento'),
                   );
                 } else {
-                  return SizedBox.shrink(); // No muestra nada si el usuario no es administrador
+                  return const SizedBox.shrink(); // No muestra nada si el usuario no es administrador
                 }
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             },
           );
         }
