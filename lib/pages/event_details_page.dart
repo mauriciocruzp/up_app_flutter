@@ -99,7 +99,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                       } else if (snapshot.hasError) {
                                         return Text('${snapshot.error}');
                                       }
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     },
                                   ),
                       ],
