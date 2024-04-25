@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:upch_events_app/components/top_bar.dart';
 import 'package:upch_events_app/pages/main_page.dart';
