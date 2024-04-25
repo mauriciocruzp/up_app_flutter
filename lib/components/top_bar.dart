@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:upch_events_app/main.dart';
-import 'package:upch_events_app/pages/start_page.dart';
 import 'package:upch_events_app/pages/update_user_page.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
@@ -26,7 +24,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => UpdateUserPage(),
+                        builder: (context) => const UpdateUserPage(),
                       ),
                     );
                   },
