@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:upch_events_app/pages/update_user_page.dart';
+import 'package:up_app_flutter/pages/update_user_page.dart';
 
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

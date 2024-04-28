@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/top_bar.dart';
-import 'package:upch_events_app/services/documents_service.dart'; // Importa el servicio de documentos
+import 'package:up_app_flutter/components/top_bar.dart';
+import 'package:up_app_flutter/services/documents_service.dart'; // Importa el servicio de documentos
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key, required this.title});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/top_bar.dart';
+import 'package:up_app_flutter/components/top_bar.dart';
 
 class ScheduleFormPage extends StatelessWidget {
   const ScheduleFormPage({super.key});

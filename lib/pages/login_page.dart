@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/top_bar.dart';
-import 'package:upch_events_app/pages/main_page.dart';
-import 'package:upch_events_app/pages/signup_page.dart';
-import 'package:upch_events_app/services/auth_user_service.dart';
+import 'package:up_app_flutter/components/top_bar.dart';
+import 'package:up_app_flutter/pages/main_page.dart';
+import 'package:up_app_flutter/pages/signup_page.dart';
+import 'package:up_app_flutter/services/auth_user_service.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});

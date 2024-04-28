@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/nav_bar.dart';
-import 'package:upch_events_app/models/nav_model.dart';
-import 'package:upch_events_app/pages/home_page.dart';
-import 'package:upch_events_app/pages/calendar_page.dart';
-import 'package:upch_events_app/pages/events_page.dart';
-import 'package:upch_events_app/pages/map_page.dart';
-import 'package:upch_events_app/pages/schedule_form_page.dart';
+import 'package:up_app_flutter/components/nav_bar.dart';
+import 'package:up_app_flutter/models/nav_model.dart';
+import 'package:up_app_flutter/pages/home_page.dart';
+import 'package:up_app_flutter/pages/calendar_page.dart';
+import 'package:up_app_flutter/pages/events_page.dart';
+import 'package:up_app_flutter/pages/map_page.dart';
+import 'package:up_app_flutter/pages/schedule_form_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});

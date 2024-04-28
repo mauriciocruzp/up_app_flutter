@@ -1,5 +1,5 @@
-import 'package:upch_events_app/models/comment_model.dart';
-import 'package:upch_events_app/models/event_model.dart';
+import 'package:up_app_flutter/models/comment_model.dart';
+import 'package:up_app_flutter/models/event_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

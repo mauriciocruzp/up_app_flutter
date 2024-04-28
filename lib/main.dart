@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/pages/start_page.dart';
+import 'package:up_app_flutter/pages/start_page.dart';
 
 void main() {
   runApp(const MyApp());

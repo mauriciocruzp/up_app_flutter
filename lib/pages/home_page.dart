@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/top_bar.dart';
-import 'package:upch_events_app/pages/event_details_page.dart';
+import 'package:up_app_flutter/components/top_bar.dart';
+import 'package:up_app_flutter/pages/event_details_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});

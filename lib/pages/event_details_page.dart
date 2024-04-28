@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/top_bar.dart';
-import 'package:upch_events_app/pages/events_page.dart';
+import 'package:up_app_flutter/components/top_bar.dart';
+import 'package:up_app_flutter/pages/events_page.dart';
 
 import '../models/comment_model.dart';
 import '../models/event_model.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/pages/login_page.dart';
+import 'package:up_app_flutter/pages/login_page.dart';
 
 
 class StartPage extends StatelessWidget {

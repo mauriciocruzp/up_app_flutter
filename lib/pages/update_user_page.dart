@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:upch_events_app/components/top_bar.dart';
-import 'package:upch_events_app/services/auth_user_service.dart';
+import 'package:up_app_flutter/components/top_bar.dart';
+import 'package:up_app_flutter/services/auth_user_service.dart';
 
 import 'home_page.dart';
 

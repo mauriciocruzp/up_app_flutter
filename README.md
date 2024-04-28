@@ -1,4 +1,4 @@
-# upch_events_app
+# up_app_flutter
 
 A new Flutter project.
 
